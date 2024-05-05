@@ -29,9 +29,13 @@ def write_encrypted_content_to_github_repo(repo_owner, repo_name, file_path, con
         "Accept": "application/vnd.github.v3+json"
     }
 
+    # Convert the ciphertext to a string representation
+    ciphertext_str = ' '.join(map(str, content))
+
+    # Create the data payload for the API request
     data = {
         "message": "Add encrypted content to output.txt",
-        "content": base64.b64encode(content).decode('utf-8'),  # Encode the content to base64
+        "content": base64.b64encode(ciphertext_str.encode()).decode(),  # Encode the content to base64
         "sha": sha
     }
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}"
