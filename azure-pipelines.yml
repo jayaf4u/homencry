@@ -1,28 +1,31 @@
 trigger:
-- master
+  branches:
+    include:
+      - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.x'
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
 
-- script: |
-    # Install dependencies
-    pip install azure-storage-blob
-    pip install phe
-    # Run Python script
-    python app1.py
-  displayName: 'Run Python Script'
+  - script: |
+      pip install azure-storage-blob
+      pip install phe
+    displayName: 'Install dependencies'
 
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'home2'  # Azure service connection name
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      # Upload output.txt to Azure Storage container
-      az storage blob upload --file output.txt --container-name con1 --name output.txt --account-name azstore116
-  displayName: 'Upload Output File to Azure Storage Container'
+  - script: |
+      python script.py  # Replace 'script.py' with the name of your Python script file
+    displayName: 'Run Python script'
+
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: 'home2'  # Azure service connection name
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        # Upload encrypted content to Azure Blob Storage container
+        az storage blob upload --data output.txt --container-name con1 --name output.txt --account-name azstore116
+    displayName: 'Upload Encrypted Content to Azure Storage Container'
