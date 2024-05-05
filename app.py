@@ -29,10 +29,9 @@ def write_encrypted_content_to_github_repo(repo_owner, repo_name, file_path, con
         "Accept": "application/vnd.github.v3+json"
     }
 
-    encrypted_content = base64.b64encode(content.encode('utf-8')).decode('utf-8')
     data = {
         "message": "Add encrypted content to output.txt",
-        "content": encrypted_content,
+        "content": base64.b64encode(content).decode('utf-8'),  # Encode the content to base64
         "sha": sha
     }
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}"
@@ -60,4 +59,4 @@ if input_content:
     encrypted_content = encrypt_data(public_key, int(input_content))  # Assuming input content is an integer
     
     # Write encrypted content to output.txt file in GitHub repository
-    write_encrypted_content_to_github_repo(repo_owner, repo_name, output_file_path, str(encrypted_content), sha, github_token)
+    write_encrypted_content_to_github_repo(repo_owner, repo_name, output_file_path, encrypted_content, sha, github_token)
