@@ -12,7 +12,7 @@ steps:
 - script: |
     # Install dependencies
     pip install azure-storage-blob
-
+    pip install phe
     # Run Python script
     python main.py
   displayName: 'Run Python Script'
