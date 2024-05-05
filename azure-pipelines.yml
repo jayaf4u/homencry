@@ -14,7 +14,7 @@ steps:
     pip install azure-storage-blob
     pip install phe
     # Run Python script
-    python app.py
+    python app1.py
   displayName: 'Run Python Script'
 
 - task: AzureCLI@2
