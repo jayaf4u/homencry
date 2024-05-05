@@ -21,7 +21,7 @@ def read_input_from_github_repo(repo_owner, repo_name, file_path, token=None):
 
 def encrypt_data(public_key, plaintext):
     encrypted_value = public_key.encrypt(plaintext)
-    return encrypted_value.ciphertext()
+    return encrypted_value
 
 def write_encrypted_content_to_github_repo(repo_owner, repo_name, file_path, content, sha, token=None):
     headers = {
@@ -30,7 +30,7 @@ def write_encrypted_content_to_github_repo(repo_owner, repo_name, file_path, con
     }
 
     # Convert the ciphertext to a string representation
-    ciphertext_str = ' '.join(map(str, content))
+    ciphertext_str = ' '.join(map(str, content.ciphertext()))
 
     # Create the data payload for the API request
     data = {
