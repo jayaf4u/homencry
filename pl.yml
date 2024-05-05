@@ -1,0 +1,29 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+
+- script: |
+    # Install dependencies
+    pip install azure-storage-blob
+
+    # Run Python script
+    python script.py
+  displayName: 'Run Python Script'
+
+- task: AzureFileCopy@5
+  inputs:
+    SourcePath: 'output.txt'  # Path to output file
+    azureSubscription: 'YourAzureSubscription'  # Azure subscription service connection
+    Destination: 'AzureBlob'  # Destination type
+    storage: 'YourAzureStorageAccount'  # Azure storage account
+    ContainerName: 'YourContainerName'  # Azure storage container name
+    BlobPrefix: 'output.txt'  # Blob prefix
+    outputStorageUri: 'outputStorageUri'  # Output storage URI variable
+  displayName: 'Copy Output File to Azure Storage'
